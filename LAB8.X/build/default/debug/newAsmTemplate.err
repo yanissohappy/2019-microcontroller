@@ -1,0 +1,6 @@
+Warning[205] C:\USERS\YAN\MPLABXPROJECTS\LAB8.X\NEWASMTEMPLATE.ASM 1 : Found directive in column 1. (LIST)
+Warning[207] C:\USERS\YAN\MPLABXPROJECTS\LAB8.X\NEWASMTEMPLATE.ASM 65 : Found label after column 1. (ISR)
+Warning[207] C:\USERS\YAN\MPLABXPROJECTS\LAB8.X\NEWASMTEMPLATE.ASM 73 : Found label after column 1. (inner_isr)
+Warning[207] C:\USERS\YAN\MPLABXPROJECTS\LAB8.X\NEWASMTEMPLATE.ASM 81 : Found label after column 1. (Initial)
+Warning[207] C:\USERS\YAN\MPLABXPROJECTS\LAB8.X\NEWASMTEMPLATE.ASM 103 : Found label after column 1. (Main)
+Warning[205] C:\USERS\YAN\MPLABXPROJECTS\LAB8.X\NEWASMTEMPLATE.ASM 106 : Found directive in column 1. (end)
