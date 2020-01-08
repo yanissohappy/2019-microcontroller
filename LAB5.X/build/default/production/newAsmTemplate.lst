@@ -1,0 +1,107 @@
+
+
+Microchip MPLAB XC8 Assembler V2.10 build 88905656 
+                                                                                                           Sun Oct 20 22:12:42 2019
+
+
+     1                           	processor	18F4520
+     2                           	opt	pw 132
+     3                           	opt	flic
+     4                           	psect	mytext,local,reloc=2,class=CODE,delta=1
+     5  0000                     stk_offset	set	0
+     6  0000                     auto_size	set	0
+     7                           
+     8                           ; stack_auto defines a symbol /name/_offset which equates to the
+     9                           ; stack offset of the auto object in question
+    10  0000                     
+    11                           ; stack_param defines a symbol /name/_offset which equates to the
+    12                           ; stack offset of the parameter object in question
+    13  0000                     
+    14                           ; alloc_stack adjusts the SP to allocate space for auto objects
+    15                           ; it also links in to the btemp symbol so that can be used
+    16  0000                     
+    17                           ; restore_stack adjusts the SP to remove all auto and parameter
+    18                           ; objects from the stack prior to returning from a function
+    19  0000                     
+    20                           	psect	mytext
+    21  007F66                     _divide:
+    22                           	opt callstack 0
+    23                           
+    24                           ;MOVFF 0x001, 0x007 ;被除數 低位
+    25                           ;MOVFF 0x003, 0x009 ;被除數 高位
+    26  007F66  C001 FF8A          	movff	1,3978	;被除數 低位
+    27  007F6A  C002 FF8B          	movff	2,3979	;被除數 高位
+    28  007F6E  C003 FF8C          	movff	3,3980	;除數
+    29  007F72  0E08               	movlw	8
+    30  007F74  6E89               	movwf	3977,c	;LATA放8
+    31  007F76  368A               	rlcf	3978,f,c
+    32  007F78  368B               	rlcf	3979,f,c
+    33  007F7A                     step_2:
+    34  007F7A  CF8C FFE8          	movff	3980,wreg
+    35  007F7E  5E8B               	subwf	3979,f,c
+    36  007F80  4E89               	dcfsnz	3977,f,c
+    37  007F82  D00D               	goto	done
+    38  007F84  BE8B               	btfsc	3979,7,c	;看有沒有負數
+    39  007F86  D004               	goto	if_remainder_smaller_than_0	;如果有負數的話
+    40  007F88  368A               	rlcf	3978,f,c
+    41  007F8A  368B               	rlcf	3979,f,c
+    42  007F8C  808A               	bsf	3978,0,c
+    43  007F8E  D7F5               	goto	step_2
+    44  007F90                     if_remainder_smaller_than_0:
+    45  007F90  CF8C FFE8          	movff	3980,wreg
+    46  007F94  268B               	addwf	3979,f,c
+    47  007F96  368A               	rlcf	3978,f,c
+    48  007F98  368B               	rlcf	3979,f,c
+    49  007F9A  908A               	bcf	3978,0,c
+    50  007F9C  D7EE               	goto	step_2
+    51  007F9E                     done:
+    52  007F9E  368A               	rlcf	3978,f,c
+    53  007FA0  368B               	rlcf	3979,f,c
+    54  007FA2  CF8A F001          	movff	3978,1
+    55  007FA6  CF8B F002          	movff	3979,2
+    56  007FAA  0012               	return	
+    57                           tosu	equ	0xFFF
+    58                           tosh	equ	0xFFE
+    59                           tosl	equ	0xFFD
+    60                           stkptr	equ	0xFFC
+    61                           pclatu	equ	0xFFB
+    62                           pclath	equ	0xFFA
+    63                           pcl	equ	0xFF9
+    64                           tblptru	equ	0xFF8
+    65                           tblptrh	equ	0xFF7
+    66                           tblptrl	equ	0xFF6
+    67                           tablat	equ	0xFF5
+    68                           prodh	equ	0xFF4
+    69                           prodl	equ	0xFF3
+    70                           indf0	equ	0xFEF
+    71                           postinc0	equ	0xFEE
+    72                           postdec0	equ	0xFED
+    73                           preinc0	equ	0xFEC
+    74                           plusw0	equ	0xFEB
+    75                           fsr0h	equ	0xFEA
+    76                           fsr0l	equ	0xFE9
+    77                           wreg	equ	0xFE8
+    78                           indf1	equ	0xFE7
+    79                           postinc1	equ	0xFE6
+    80                           postdec1	equ	0xFE5
+    81                           preinc1	equ	0xFE4
+    82                           plusw1	equ	0xFE3
+    83                           fsr1h	equ	0xFE2
+    84                           fsr1l	equ	0xFE1
+    85                           bsr	equ	0xFE0
+    86                           indf2	equ	0xFDF
+    87                           postinc2	equ	0xFDE
+    88                           postdec2	equ	0xFDD
+    89                           preinc2	equ	0xFDC
+    90                           plusw2	equ	0xFDB
+    91                           fsr2h	equ	0xFDA
+    92                           fsr2l	equ	0xFD9
+    93                           status	equ	0xFD8
+
+
+Microchip Technology PIC18 Macro Assembler V2.10 build 88905656 
+Symbol Table                                                                                               Sun Oct 20 22:12:42 2019
+
+                        LATA 000F89                          LATB 000F8A                          LATC 000F8B  
+                        LATD 000F8C                          WREG 000FE8                          done 7F9E  
+                      step_2 7F7A                       _divide 7F66   if_remainder_smaller_than_0 7F90  

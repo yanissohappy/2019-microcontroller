@@ -1,0 +1,114 @@
+
+
+Microchip MPLAB XC8 Assembler V2.10 build 88905656 
+                                                                                                           Mon Oct 21 17:43:27 2019
+
+
+     1                           	processor	18F4520
+     2                           	opt	pw 132
+     3                           	opt	flic
+     4                           	psect	mytext,local,reloc=2,class=CODE,delta=1
+     5  0000                     stk_offset	set	0
+     6  0000                     auto_size	set	0
+     7                           
+     8                           ; stack_auto defines a symbol /name/_offset which equates to the
+     9                           ; stack offset of the auto object in question
+    10  0000                     
+    11                           ; stack_param defines a symbol /name/_offset which equates to the
+    12                           ; stack offset of the parameter object in question
+    13  0000                     
+    14                           ; alloc_stack adjusts the SP to allocate space for auto objects
+    15                           ; it also links in to the btemp symbol so that can be used
+    16  0000                     
+    17                           ; restore_stack adjusts the SP to remove all auto and parameter
+    18                           ; objects from the stack prior to returning from a function
+    19  0000                     
+    20                           	psect	mytext
+    21  007FBA                     _divide:
+    22                           	opt callstack 0
+    23  007FBA  C001 FF8A          	movff	1,3978	;被除數 低位(即remainder 0~8 :quotient)
+    24                           
+    25                           ;MOVFF 0x002, LATC ;被除數 高位(即remainder 9~15 :remainder)
+    26  007FBE  6A8B               	clrf	3979,c
+    27  007FC0  C003 FF92          	movff	3,3986	;除數
+    28  007FC4  0E08               	movlw	8
+    29  007FC6  6E89               	movwf	3977,c	;LATA放8
+    30  007FC8  90D8               	bcf	status,0,c
+    31  007FCA  368A               	rlcf	3978,f,c
+    32  007FCC  368B               	rlcf	3979,f,c
+    33  007FCE                     step_2:
+    34  007FCE  5092               	movf	3986,w,c
+    35  007FD0  5E8B               	subwf	3979,f,c
+    36  007FD2  BE8B               	btfsc	3979,7,c	;看有沒有負數
+    37  007FD4  D005               	goto	if_remainder_smaller_than_0	;如果有負數的話
+    38  007FD6  90D8               	bcf	status,0,c
+    39  007FD8  368A               	rlcf	3978,f,c
+    40  007FDA  368B               	rlcf	3979,f,c
+    41  007FDC  808A               	bsf	3978,0,c	;最右邊設成1
+    42  007FDE  D006               	goto	L1
+    43  007FE0                     if_remainder_smaller_than_0:
+    44  007FE0  5092               	movf	3986,w,c
+    45  007FE2  268B               	addwf	3979,f,c
+    46  007FE4  90D8               	bcf	status,0,c	;一定要這樣打!!!否則會沒辦法編譯
+    47  007FE6  368A               	rlcf	3978,f,c
+    48  007FE8  368B               	rlcf	3979,f,c
+    49  007FEA  908A               	bcf	3978,0,c	;最右邊設成0
+    50  007FEC                     L1:
+    51  007FEC  4E89               	dcfsnz	3977,f,c
+    52  007FEE  D001               	goto	done	;如果lata ==0 就到done
+    53  007FF0  D7EE               	goto	step_2
+    54  007FF2                     done:
+    55  007FF2  90D8               	bcf	status,0,c
+    56  007FF4  328B               	rrcf	3979,f,c
+    57                           
+    58                           ;MOVFF LATB, 0x003
+    59                           ;CLRF 0x04
+    60                           ;MOVFF LATC, 0x004
+    61  007FF6  CF8A F001          	movff	3978,1
+    62  007FFA  CF8B F002          	movff	3979,2
+    63  007FFE  0012               	return	
+    64                           tosu	equ	0xFFF
+    65                           tosh	equ	0xFFE
+    66                           tosl	equ	0xFFD
+    67                           stkptr	equ	0xFFC
+    68                           pclatu	equ	0xFFB
+    69                           pclath	equ	0xFFA
+    70                           pcl	equ	0xFF9
+    71                           tblptru	equ	0xFF8
+    72                           tblptrh	equ	0xFF7
+    73                           tblptrl	equ	0xFF6
+    74                           tablat	equ	0xFF5
+    75                           prodh	equ	0xFF4
+    76                           prodl	equ	0xFF3
+    77                           indf0	equ	0xFEF
+    78                           postinc0	equ	0xFEE
+    79                           postdec0	equ	0xFED
+    80                           preinc0	equ	0xFEC
+    81                           plusw0	equ	0xFEB
+    82                           fsr0h	equ	0xFEA
+    83                           fsr0l	equ	0xFE9
+    84                           wreg	equ	0xFE8
+    85                           indf1	equ	0xFE7
+    86                           postinc1	equ	0xFE6
+    87                           postdec1	equ	0xFE5
+    88                           preinc1	equ	0xFE4
+    89                           plusw1	equ	0xFE3
+    90                           fsr1h	equ	0xFE2
+    91                           fsr1l	equ	0xFE1
+    92                           bsr	equ	0xFE0
+    93                           indf2	equ	0xFDF
+    94                           postinc2	equ	0xFDE
+    95                           postdec2	equ	0xFDD
+    96                           preinc2	equ	0xFDC
+    97                           plusw2	equ	0xFDB
+    98                           fsr2h	equ	0xFDA
+    99                           fsr2l	equ	0xFD9
+   100                           status	equ	0xFD8
+
+
+Microchip Technology PIC18 Macro Assembler V2.10 build 88905656 
+Symbol Table                                                                                               Mon Oct 21 17:43:27 2019
+
+                        LATA 000F89                          LATB 000F8A                          LATC 000F8B  
+                        done 7FF2                         TRISA 000F92                        STATUS 000FD8  
+                      step_2 7FCE                       _divide 7FBA   if_remainder_smaller_than_0 7FE0  

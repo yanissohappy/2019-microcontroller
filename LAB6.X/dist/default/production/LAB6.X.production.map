@@ -1,0 +1,76 @@
+MPLINK 5.09, LINKER
+Linker Map File - Created Tue Dec 17 20:58:53 2019
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x0000d8
+                   .cinit    romdata   0x0000d8    program   0x000002
+.config_300001_BUILD/DEFAULT/PRODUCTION/NEWASMT    romdata   0x300001    program   0x000001
+.config_300003_BUILD/DEFAULT/PRODUCTION/NEWASMT    romdata   0x300003    program   0x000001
+.config_300006_BUILD/DEFAULT/PRODUCTION/NEWASMT    romdata   0x300006    program   0x000001
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x0000d9      
+                            0x300001    0x300001      
+                            0x300003    0x300003      
+                            0x300006    0x300006      
+            221 out of 33048 program addresses used, program memory utilization is 0%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                  _1LOOP1   0x000016    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                  _1LOOP2   0x000012    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                  _2LOOP1   0x00003c    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                  _2LOOP2   0x000038    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                  _3LOOP1   0x000064    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                  _3LOOP2   0x000060    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                  _4LOOP1   0x00008e    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                  _4LOOP2   0x00008a    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                  _5LOOP1   0x0000ba    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                  _5LOOP2   0x0000b6    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                   state0   0x00000a    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                 state0_0   0x00002a    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                   state1   0x000032    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                 state1_0   0x000050    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                   state2   0x000058    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                 state2_0   0x000078    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                   state3   0x000080    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                 state3_0   0x0000a2    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                   state4   0x0000aa    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                 state4_0   0x0000ce    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                   state0   0x00000a    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                  _1LOOP2   0x000012    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                  _1LOOP1   0x000016    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                 state0_0   0x00002a    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                   state1   0x000032    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                  _2LOOP2   0x000038    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                  _2LOOP1   0x00003c    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                 state1_0   0x000050    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                   state2   0x000058    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                  _3LOOP2   0x000060    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                  _3LOOP1   0x000064    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                 state2_0   0x000078    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                   state3   0x000080    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                  _4LOOP2   0x00008a    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                  _4LOOP1   0x00008e    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                 state3_0   0x0000a2    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                   state4   0x0000aa    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                  _5LOOP2   0x0000b6    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                  _5LOOP1   0x0000ba    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+                 state4_0   0x0000ce    program     static C:\Users\yan\MPLABXProjects\LAB6.X\newAsmTemplate.asm
+
+
