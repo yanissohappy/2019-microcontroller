@@ -1,0 +1,907 @@
+
+
+Microchip MPLAB XC8 Assembler V2.10 build 88905656 
+                                                                                               Mon Jan 06 19:32:51 2020
+
+Microchip MPLAB XC8 C Compiler v2.10 (Free license) build 20190730164152 Og1 
+     1                           	processor	18F4520
+     2                           	fnconf	rparam,??,?,0
+     3                           	opt	pw 120
+     4                           	opt	flic
+     5                           	psect	cinit,global,reloc=2,class=CODE,delta=1
+     6                           	psect	bssCOMRAM,global,class=COMRAM,space=1,delta=1,noexec
+     7                           	psect	cstackCOMRAM,global,class=COMRAM,space=1,delta=1,noexec
+     8                           	psect	text0,global,reloc=2,class=CODE,delta=1
+     9                           	psect	text1,global,reloc=2,class=CODE,delta=1
+    10                           	psect	intcode,global,reloc=2,class=CODE,delta=1
+    11                           	psect	intcode_body,global,reloc=2,class=CODE,delta=1
+    12                           	psect	intsave_regs,global,class=BIGRAM,space=1,delta=1,noexec
+    13                           	psect	rparam,global,class=COMRAM,space=1,delta=1,noexec
+    14                           	psect	temp,global,ovrld,common,class=COMRAM,space=1,delta=1
+    15  0000                     
+    16                           ; Version 2.10
+    17                           ; Generated 31/07/2019 GMT
+    18                           ; 
+    19                           ; Copyright © 2019, Microchip Technology Inc. and its subsidiaries ("Microchip")
+    20                           ; All rights reserved.
+    21                           ; 
+    22                           ; This software is developed by Microchip Technology Inc. and its subsidiaries ("Microch
+      +                          ip").
+    23                           ; 
+    24                           ; Redistribution and use in source and binary forms, with or without modification, are
+    25                           ; permitted provided that the following conditions are met:
+    26                           ; 
+    27                           ;     1. Redistributions of source code must retain the above copyright notice, this lis
+      +                          t of
+    28                           ;        conditions and the following disclaimer.
+    29                           ; 
+    30                           ;     2. Redistributions in binary form must reproduce the above copyright notice, this 
+      +                          list
+    31                           ;        of conditions and the following disclaimer in the documentation and/or other
+    32                           ;        materials provided with the distribution.
+    33                           ; 
+    34                           ;     3. Microchip's name may not be used to endorse or promote products derived from th
+      +                          is
+    35                           ;        software without specific prior written permission.
+    36                           ; 
+    37                           ; THIS SOFTWARE IS PROVIDED BY MICROCHIP "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    38                           ; INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS F
+      +                          OR
+    39                           ; PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL MICROCHIP BE LIABLE FOR ANY DIRECT, INDIREC
+      +                          T,
+    40                           ; INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING BUT NOT LIMITED TO
+    41                           ; PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA OR PROFITS; OR BUSINESS
+    42                           ; INTERRUPTION) HOWSOEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, ST
+      +                          RICT
+    43                           ; LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE U
+      +                          SE OF
+    44                           ; THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    45                           ; 
+    46                           ; 
+    47                           ; Code-generator required, PIC18F4520 Definitions
+    48                           ; 
+    49                           ; SFR Addresses
+    50  0000                     _TMR1	set	4046
+    51  0000                     _ADRESH	set	4036
+    52  0000                     _ADRESL	set	4035
+    53  0000                     _ADCON0bits	set	4034
+    54  0000                     _ADCON2	set	4032
+    55  0000                     _ADCON1	set	4033
+    56  0000                     _ADCON0	set	4034
+    57  0000                     _TRISDbits	set	3989
+    58  0000                     _TRISAbits	set	3986
+    59  0000                     _PIR1bits	set	3998
+    60  0000                     _IPR1bits	set	3999
+    61  0000                     _PIE1bits	set	3997
+    62  0000                     _T1CONbits	set	4045
+    63  0000                     _CCP1CONbits	set	4029
+    64  0000                     _CCPR1L	set	4030
+    65  0000                     _PR2	set	4043
+    66  0000                     _INTCONbits	set	4082
+    67  0000                     _RCONbits	set	4048
+    68  0000                     _TMR2	set	4044
+    69  0000                     _T2CON	set	4042
+    70  0000                     _OSCCONbits	set	4051
+    71  0000                     _TRISCbits	set	3988
+    72  0000                     _TMR1IF	set	31984
+    73                           
+    74                           ; #config settings
+    75  0000                     
+    76                           	psect	cinit
+    77  00022A                     __pcinit:
+    78                           	opt callstack 0
+    79  00022A                     start_initialization:
+    80                           	opt callstack 0
+    81  00022A                     __initialization:
+    82                           	opt callstack 0
+    83                           
+    84                           ; Clear objects allocated to COMRAM (6 bytes)
+    85  00022A  6A06               	clrf	(__pbssCOMRAM+5)& (0+255),c
+    86  00022C  6A05               	clrf	(__pbssCOMRAM+4)& (0+255),c
+    87  00022E  6A04               	clrf	(__pbssCOMRAM+3)& (0+255),c
+    88  000230  6A03               	clrf	(__pbssCOMRAM+2)& (0+255),c
+    89  000232  6A02               	clrf	(__pbssCOMRAM+1)& (0+255),c
+    90  000234  6A01               	clrf	__pbssCOMRAM& (0+255),c
+    91  000236                     end_of_initialization:
+    92                           	opt callstack 0
+    93  000236                     __end_of__initialization:
+    94                           	opt callstack 0
+    95  000236  9009               	bcf	int$flags,0,c	;clear compiler interrupt flag (level 1)
+    96  000238  9209               	bcf	int$flags,1,c	;clear compiler interrupt flag (level 2)
+    97  00023A  0100               	movlb	0
+    98  00023C  EF20  F001         	goto	_main	;jump to C main() function
+    99                           
+   100                           	psect	bssCOMRAM
+   101  000001                     __pbssCOMRAM:
+   102                           	opt callstack 0
+   103  000001                     _temp_for_timer:
+   104                           	opt callstack 0
+   105  000001                     	ds	2
+   106  000003                     _result:
+   107                           	opt callstack 0
+   108  000003                     	ds	2
+   109  000005                     _mode:
+   110                           	opt callstack 0
+   111  000005                     	ds	2
+   112                           
+   113                           	psect	cstackCOMRAM
+   114  000007                     __pcstackCOMRAM:
+   115                           	opt callstack 0
+   116  000007                     ??_Hi_ISR:
+   117                           
+   118                           ; 1 bytes @ 0x0
+   119  000007                     	ds	2
+   120  000009                     
+   121                           ; 1 bytes @ 0x2
+   122 ;;
+   123 ;;Main: autosize = 0, tempsize = 0, incstack = 0, save=0
+   124 ;;
+   125 ;; *************** function _main *****************
+   126 ;; Defined at:
+   127 ;;		line 83 in file "Question2.c"
+   128 ;; Parameters:    Size  Location     Type
+   129 ;;		None
+   130 ;; Auto vars:     Size  Location     Type
+   131 ;;		None
+   132 ;; Return value:  Size  Location     Type
+   133 ;;                  1    wreg      void 
+   134 ;; Registers used:
+   135 ;;		wreg, status,2, cstack
+   136 ;; Tracked objects:
+   137 ;;		On entry : 0/0
+   138 ;;		On exit  : 0/0
+   139 ;;		Unchanged: 0/0
+   140 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5
+   141 ;;      Params:         0       0       0       0       0       0       0
+   142 ;;      Locals:         0       0       0       0       0       0       0
+   143 ;;      Temps:          0       0       0       0       0       0       0
+   144 ;;      Totals:         0       0       0       0       0       0       0
+   145 ;;Total ram usage:        0 bytes
+   146 ;; Hardware stack levels required when called:    2
+   147 ;; This function calls:
+   148 ;;		_LED_Init
+   149 ;; This function is called by:
+   150 ;;		Startup code after reset
+   151 ;; This function uses a non-reentrant model
+   152 ;;
+   153                           
+   154                           	psect	text0
+   155  000240                     __ptext0:
+   156                           	opt callstack 0
+   157  000240                     _main:
+   158                           	opt callstack 29
+   159  000240                     
+   160                           ;Question2.c: 84:     LED_Init();
+   161  000240  ECE4  F000         	call	_LED_Init	;wreg free
+   162  000244                     l61:
+   163  000244  EF22  F001         	goto	l61
+   164  000248  EF07  F000         	goto	start
+   165  00024C                     __end_of_main:
+   166                           	opt callstack 0
+   167                           
+   168 ;; *************** function _LED_Init *****************
+   169 ;; Defined at:
+   170 ;;		line 88 in file "Question2.c"
+   171 ;; Parameters:    Size  Location     Type
+   172 ;;		None
+   173 ;; Auto vars:     Size  Location     Type
+   174 ;;		None
+   175 ;; Return value:  Size  Location     Type
+   176 ;;                  1    wreg      void 
+   177 ;; Registers used:
+   178 ;;		wreg, status,2
+   179 ;; Tracked objects:
+   180 ;;		On entry : 0/0
+   181 ;;		On exit  : 0/0
+   182 ;;		Unchanged: 0/0
+   183 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5
+   184 ;;      Params:         0       0       0       0       0       0       0
+   185 ;;      Locals:         0       0       0       0       0       0       0
+   186 ;;      Temps:          0       0       0       0       0       0       0
+   187 ;;      Totals:         0       0       0       0       0       0       0
+   188 ;;Total ram usage:        0 bytes
+   189 ;; Hardware stack levels used:    1
+   190 ;; Hardware stack levels required when called:    1
+   191 ;; This function calls:
+   192 ;;		Nothing
+   193 ;; This function is called by:
+   194 ;;		_main
+   195 ;; This function uses a non-reentrant model
+   196 ;;
+   197                           
+   198                           	psect	text1
+   199  0001C8                     __ptext1:
+   200                           	opt callstack 0
+   201  0001C8                     _LED_Init:
+   202                           	opt callstack 29
+   203  0001C8                     
+   204                           ;Question2.c: 90:     TRISCbits.TRISC2 = 0;
+   205  0001C8  9494               	bcf	148,2,c	;volatile
+   206                           
+   207                           ;Question2.c: 92:     OSCCONbits.IRCF2 = 0;
+   208  0001CA  9CD3               	bcf	211,6,c	;volatile
+   209                           
+   210                           ;Question2.c: 93:     OSCCONbits.IRCF1 = 1;
+   211  0001CC  8AD3               	bsf	211,5,c	;volatile
+   212                           
+   213                           ;Question2.c: 94:     OSCCONbits.IRCF0 = 1;
+   214  0001CE  88D3               	bsf	211,4,c	;volatile
+   215  0001D0                     
+   216                           ;Question2.c: 96:     T2CON = 0x07;
+   217  0001D0  0E07               	movlw	7
+   218  0001D2  6ECA               	movwf	202,c	;volatile
+   219                           
+   220                           ;Question2.c: 97:     TMR2 = 0;
+   221  0001D4  0E00               	movlw	0
+   222  0001D6  6ECC               	movwf	204,c	;volatile
+   223  0001D8                     
+   224                           ;Question2.c: 99:     RCONbits.IPEN = 1;
+   225  0001D8  8ED0               	bsf	208,7,c	;volatile
+   226  0001DA                     
+   227                           ;Question2.c: 100:     INTCONbits.GIE = 1;
+   228  0001DA  8EF2               	bsf	242,7,c	;volatile
+   229                           
+   230                           ;Question2.c: 102:     PR2 = 16;
+   231  0001DC  0E10               	movlw	16
+   232  0001DE  6ECB               	movwf	203,c	;volatile
+   233                           
+   234                           ;Question2.c: 103:     CCPR1L = 0;
+   235  0001E0  0E00               	movlw	0
+   236  0001E2  6EBE               	movwf	190,c	;volatile
+   237  0001E4                     
+   238                           ;Question2.c: 104:     CCP1CONbits.DC1B1 = 0;
+   239  0001E4  9ABD               	bcf	189,5,c	;volatile
+   240  0001E6                     
+   241                           ;Question2.c: 105:     CCP1CONbits.DC1B0 = 0;
+   242  0001E6  98BD               	bcf	189,4,c	;volatile
+   243  0001E8                     
+   244                           ;Question2.c: 107:     CCP1CONbits.CCP1M3 = 1;
+   245  0001E8  86BD               	bsf	189,3,c	;volatile
+   246  0001EA                     
+   247                           ;Question2.c: 108:     CCP1CONbits.CCP1M2 = 1;
+   248  0001EA  84BD               	bsf	189,2,c	;volatile
+   249  0001EC                     
+   250                           ;Question2.c: 109:     CCP1CONbits.CCP1M1 = 0;
+   251  0001EC  92BD               	bcf	189,1,c	;volatile
+   252  0001EE                     
+   253                           ;Question2.c: 110:     CCP1CONbits.CCP1M0 = 0;
+   254  0001EE  90BD               	bcf	189,0,c	;volatile
+   255  0001F0                     
+   256                           ;Question2.c: 113:     T1CONbits.RD16 = 1;
+   257  0001F0  8ECD               	bsf	205,7,c	;volatile
+   258  0001F2                     
+   259                           ;Question2.c: 114:     T1CONbits.TMR1ON = 1;
+   260  0001F2  80CD               	bsf	205,0,c	;volatile
+   261  0001F4                     
+   262                           ;Question2.c: 115:     T1CONbits.TMR1CS = 0;
+   263  0001F4  92CD               	bcf	205,1,c	;volatile
+   264                           
+   265                           ;Question2.c: 116:     T1CONbits.T1CKPS = 3;
+   266  0001F6  0E30               	movlw	48
+   267  0001F8  12CD               	iorwf	205,f,c	;volatile
+   268                           
+   269                           ;Question2.c: 118:     TMR1 = 34285;
+   270  0001FA  0E85               	movlw	133
+   271  0001FC  6ECF               	movwf	207,c	;volatile
+   272  0001FE  0EED               	movlw	237
+   273  000200  6ECE               	movwf	206,c	;volatile
+   274  000202                     
+   275                           ;Question2.c: 119:     PIE1bits.TMR1IE = 1;
+   276  000202  809D               	bsf	157,0,c	;volatile
+   277  000204                     
+   278                           ;Question2.c: 120:     IPR1bits.TMR1IP = 1;
+   279  000204  809F               	bsf	159,0,c	;volatile
+   280  000206                     
+   281                           ;Question2.c: 121:     PIR1bits.TMR1IF = 0;
+   282  000206  909E               	bcf	158,0,c	;volatile
+   283  000208                     
+   284                           ;Question2.c: 125:     TRISAbits.TRISA0 = 1;
+   285  000208  8092               	bsf	146,0,c	;volatile
+   286  00020A                     
+   287                           ;Question2.c: 126:     TRISDbits.TRISD0 = 0;
+   288  00020A  9095               	bcf	149,0,c	;volatile
+   289  00020C                     
+   290                           ;Question2.c: 127:     TRISDbits.TRISD1 = 0;
+   291  00020C  9295               	bcf	149,1,c	;volatile
+   292  00020E                     
+   293                           ;Question2.c: 128:     TRISDbits.TRISD2 = 0;
+   294  00020E  9495               	bcf	149,2,c	;volatile
+   295                           
+   296                           ;Question2.c: 130:     ADCON0 = 0b00000001;
+   297  000210  0E01               	movlw	1
+   298  000212  6EC2               	movwf	194,c	;volatile
+   299                           
+   300                           ;Question2.c: 131:     ADCON1 = 0b00001110;
+   301  000214  0E0E               	movlw	14
+   302  000216  6EC1               	movwf	193,c	;volatile
+   303                           
+   304                           ;Question2.c: 132:     ADCON2 = 0b10010100;
+   305  000218  0E94               	movlw	148
+   306  00021A  6EC0               	movwf	192,c	;volatile
+   307  00021C                     
+   308                           ;Question2.c: 134:     RCONbits.IPEN = 1;
+   309  00021C  8ED0               	bsf	208,7,c	;volatile
+   310  00021E                     
+   311                           ;Question2.c: 135:     INTCONbits.GIE = 1;
+   312  00021E  8EF2               	bsf	242,7,c	;volatile
+   313  000220                     
+   314                           ;Question2.c: 137:     PIR1bits.ADIF = 0;
+   315  000220  9C9E               	bcf	158,6,c	;volatile
+   316  000222                     
+   317                           ;Question2.c: 138:     PIE1bits.ADIE = 1;
+   318  000222  8C9D               	bsf	157,6,c	;volatile
+   319  000224                     
+   320                           ;Question2.c: 139:     IPR1bits.ADIP = 1;
+   321  000224  8C9F               	bsf	159,6,c	;volatile
+   322  000226                     
+   323                           ;Question2.c: 141:     ADCON0bits.GO_DONE = 1;
+   324  000226  82C2               	bsf	194,1,c	;volatile
+   325  000228  0012               	return		;funcret
+   326  00022A                     __end_of_LED_Init:
+   327                           	opt callstack 0
+   328                           
+   329 ;; *************** function _Hi_ISR *****************
+   330 ;; Defined at:
+   331 ;;		line 145 in file "Question2.c"
+   332 ;; Parameters:    Size  Location     Type
+   333 ;;		None
+   334 ;; Auto vars:     Size  Location     Type
+   335 ;;		None
+   336 ;; Return value:  Size  Location     Type
+   337 ;;                  1    wreg      void 
+   338 ;; Registers used:
+   339 ;;		wreg, status,2, status,0
+   340 ;; Tracked objects:
+   341 ;;		On entry : 0/0
+   342 ;;		On exit  : 0/0
+   343 ;;		Unchanged: 0/0
+   344 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5
+   345 ;;      Params:         0       0       0       0       0       0       0
+   346 ;;      Locals:         0       0       0       0       0       0       0
+   347 ;;      Temps:          2       0       0       0       0       0       0
+   348 ;;      Totals:         2       0       0       0       0       0       0
+   349 ;;Total ram usage:        2 bytes
+   350 ;; Hardware stack levels used:    1
+   351 ;; This function calls:
+   352 ;;		Nothing
+   353 ;; This function is called by:
+   354 ;;		Interrupt level 2
+   355 ;; This function uses a non-reentrant model
+   356 ;;
+   357                           
+   358                           	psect	intcode
+   359  000008                     __pintcode:
+   360                           	opt callstack 0
+   361  000008                     _Hi_ISR:
+   362                           	opt callstack 29
+   363                           
+   364                           ;incstack = 0
+   365  000008  8209               	bsf	int$flags,1,c	;set compiler interrupt flag (level 2)
+   366  00000A  ED09  F000         	call	int_func,f	;refresh shadow registers
+   367                           
+   368                           	psect	intcode_body
+   369  000012                     __pintcode_body:
+   370                           	opt callstack 29
+   371  000012                     int_func:
+   372                           	opt callstack 29
+   373  000012  0006               	pop		; remove dummy address from shadow register refresh
+   374  000014                     
+   375                           ;Question2.c: 147:     if(PIR1bits.ADIF == 1){
+   376  000014  AC9E               	btfss	158,6,c	;volatile
+   377  000016  EF0F  F000         	goto	i2u1_41
+   378  00001A  EF11  F000         	goto	i2u1_40
+   379  00001E                     i2u1_41:
+   380  00001E  EF95  F000         	goto	i2l861
+   381  000022                     i2u1_40:
+   382  000022                     
+   383                           ;Question2.c: 148:         ADCON0bits.GO_DONE = 0;
+   384  000022  92C2               	bcf	194,1,c	;volatile
+   385                           
+   386                           ;Question2.c: 149:         PIR1bits.ADIF = 0;
+   387  000024  9C9E               	bcf	158,6,c	;volatile
+   388  000026                     
+   389                           ;Question2.c: 150:         result = ADRESL + (ADRESH << 8);
+   390  000026  50C4               	movf	196,w,c	;volatile
+   391  000028  6E08               	movwf	(??_Hi_ISR+1)^0,c
+   392  00002A  6A07               	clrf	??_Hi_ISR^0,c
+   393  00002C  50C3               	movf	195,w,c	;volatile
+   394  00002E  2407               	addwf	??_Hi_ISR^0,w,c
+   395  000030  6E03               	movwf	_result^0,c
+   396  000032  0E00               	movlw	0
+   397  000034  2008               	addwfc	(??_Hi_ISR+1)^0,w,c
+   398  000036  6E04               	movwf	(_result+1)^0,c
+   399                           
+   400                           ;Question2.c: 151:         if(result >= 896){
+   401  000038  0E80               	movlw	128
+   402  00003A  5C03               	subwf	_result^0,w,c
+   403  00003C  0E03               	movlw	3
+   404  00003E  5804               	subwfb	(_result+1)^0,w,c
+   405  000040  A0D8               	btfss	status,0,c
+   406  000042  EF25  F000         	goto	i2u2_41
+   407  000046  EF27  F000         	goto	i2u2_40
+   408  00004A                     i2u2_41:
+   409  00004A  EF2D  F000         	goto	i2l831
+   410  00004E                     i2u2_40:
+   411  00004E                     
+   412                           ;Question2.c: 152:             temp_for_timer = 34285;
+   413  00004E  0E85               	movlw	133
+   414  000050  6E02               	movwf	(_temp_for_timer+1)^0,c
+   415  000052  0EED               	movlw	237
+   416  000054  6E01               	movwf	_temp_for_timer^0,c
+   417                           
+   418                           ;Question2.c: 153:         }
+   419  000056  EF90  F000         	goto	i2l857
+   420  00005A                     i2l831:
+   421  00005A  0E03               	movlw	3
+   422  00005C  5C04               	subwf	(_result+1)^0,w,c
+   423  00005E  A0D8               	btfss	status,0,c
+   424  000060  EF34  F000         	goto	i2u3_41
+   425  000064  EF36  F000         	goto	i2u3_40
+   426  000068                     i2u3_41:
+   427  000068  EF3C  F000         	goto	i2l835
+   428  00006C                     i2u3_40:
+   429  00006C                     
+   430                           ;Question2.c: 155:             temp_for_timer = 40000;
+   431  00006C  0E9C               	movlw	156
+   432  00006E  6E02               	movwf	(_temp_for_timer+1)^0,c
+   433  000070  0E40               	movlw	64
+   434  000072  6E01               	movwf	_temp_for_timer^0,c
+   435                           
+   436                           ;Question2.c: 156:         }
+   437  000074  EF90  F000         	goto	i2l857
+   438  000078                     i2l835:
+   439  000078  0E80               	movlw	128
+   440  00007A  5C03               	subwf	_result^0,w,c
+   441  00007C  0E02               	movlw	2
+   442  00007E  5804               	subwfb	(_result+1)^0,w,c
+   443  000080  A0D8               	btfss	status,0,c
+   444  000082  EF45  F000         	goto	i2u4_41
+   445  000086  EF47  F000         	goto	i2u4_40
+   446  00008A                     i2u4_41:
+   447  00008A  EF4D  F000         	goto	i2l839
+   448  00008E                     i2u4_40:
+   449  00008E                     
+   450                           ;Question2.c: 158:             temp_for_timer = 45000;
+   451  00008E  0EAF               	movlw	175
+   452  000090  6E02               	movwf	(_temp_for_timer+1)^0,c
+   453  000092  0EC8               	movlw	200
+   454  000094  6E01               	movwf	_temp_for_timer^0,c
+   455                           
+   456                           ;Question2.c: 159:         }
+   457  000096  EF90  F000         	goto	i2l857
+   458  00009A                     i2l839:
+   459  00009A  0E02               	movlw	2
+   460  00009C  5C04               	subwf	(_result+1)^0,w,c
+   461  00009E  A0D8               	btfss	status,0,c
+   462  0000A0  EF54  F000         	goto	i2u5_41
+   463  0000A4  EF56  F000         	goto	i2u5_40
+   464  0000A8                     i2u5_41:
+   465  0000A8  EF5C  F000         	goto	i2l843
+   466  0000AC                     i2u5_40:
+   467  0000AC                     
+   468                           ;Question2.c: 161:             temp_for_timer = 49910;
+   469  0000AC  0EC2               	movlw	194
+   470  0000AE  6E02               	movwf	(_temp_for_timer+1)^0,c
+   471  0000B0  0EF6               	movlw	246
+   472  0000B2  6E01               	movwf	_temp_for_timer^0,c
+   473                           
+   474                           ;Question2.c: 162:         }
+   475  0000B4  EF90  F000         	goto	i2l857
+   476  0000B8                     i2l843:
+   477  0000B8  0E80               	movlw	128
+   478  0000BA  5C03               	subwf	_result^0,w,c
+   479  0000BC  0E01               	movlw	1
+   480  0000BE  5804               	subwfb	(_result+1)^0,w,c
+   481  0000C0  A0D8               	btfss	status,0,c
+   482  0000C2  EF65  F000         	goto	i2u6_41
+   483  0000C6  EF67  F000         	goto	i2u6_40
+   484  0000CA                     i2u6_41:
+   485  0000CA  EF6D  F000         	goto	i2l847
+   486  0000CE                     i2u6_40:
+   487  0000CE                     
+   488                           ;Question2.c: 164:             temp_for_timer = 51600;
+   489  0000CE  0EC9               	movlw	201
+   490  0000D0  6E02               	movwf	(_temp_for_timer+1)^0,c
+   491  0000D2  0E90               	movlw	144
+   492  0000D4  6E01               	movwf	_temp_for_timer^0,c
+   493                           
+   494                           ;Question2.c: 165:         }
+   495  0000D6  EF90  F000         	goto	i2l857
+   496  0000DA                     i2l847:
+   497  0000DA  0404               	decf	(_result+1)^0,w,c
+   498  0000DC  A0D8               	btfss	status,0,c
+   499  0000DE  EF73  F000         	goto	i2u7_41
+   500  0000E2  EF75  F000         	goto	i2u7_40
+   501  0000E6                     i2u7_41:
+   502  0000E6  EF7B  F000         	goto	i2l851
+   503  0000EA                     i2u7_40:
+   504  0000EA                     
+   505                           ;Question2.c: 167:             temp_for_timer = 53300;
+   506  0000EA  0ED0               	movlw	208
+   507  0000EC  6E02               	movwf	(_temp_for_timer+1)^0,c
+   508  0000EE  0E34               	movlw	52
+   509  0000F0  6E01               	movwf	_temp_for_timer^0,c
+   510                           
+   511                           ;Question2.c: 168:         }
+   512  0000F2  EF90  F000         	goto	i2l857
+   513  0000F6                     i2l851:
+   514  0000F6  5004               	movf	(_result+1)^0,w,c
+   515  0000F8  E109               	bnz	i2u8_40
+   516  0000FA  0E80               	movlw	128
+   517  0000FC  5C03               	subwf	_result^0,w,c
+   518  0000FE  A0D8               	btfss	status,0,c
+   519  000100  EF84  F000         	goto	i2u8_41
+   520  000104  EF86  F000         	goto	i2u8_40
+   521  000108                     i2u8_41:
+   522  000108  EF8C  F000         	goto	i2l855
+   523  00010C                     i2u8_40:
+   524  00010C                     
+   525                           ;Question2.c: 170:             temp_for_timer = 55200;
+   526  00010C  0ED7               	movlw	215
+   527  00010E  6E02               	movwf	(_temp_for_timer+1)^0,c
+   528  000110  0EA0               	movlw	160
+   529  000112  6E01               	movwf	_temp_for_timer^0,c
+   530                           
+   531                           ;Question2.c: 171:         }
+   532  000114  EF90  F000         	goto	i2l857
+   533  000118                     i2l855:
+   534                           
+   535                           ;Question2.c: 173:             temp_for_timer = 57772;
+   536  000118  0EE1               	movlw	225
+   537  00011A  6E02               	movwf	(_temp_for_timer+1)^0,c
+   538  00011C  0EAC               	movlw	172
+   539  00011E  6E01               	movwf	_temp_for_timer^0,c
+   540  000120                     i2l857:
+   541                           
+   542                           ;Question2.c: 175:         _delay(10);
+   543  000120  0E03               	movlw	3
+   544  000122                     i2u16_47:
+   545  000122  2EE8               	decfsz	wreg,f,c
+   546  000124  D7FE               	bra	i2u16_47
+   547  000126  F000               	nop	
+   548  000128                     
+   549                           ;Question2.c: 176:         ADCON0bits.GO_DONE = 1;
+   550  000128  82C2               	bsf	194,1,c	;volatile
+   551  00012A                     i2l861:
+   552                           
+   553                           ;Question2.c: 179:     if(TMR1IF)
+   554  00012A  A09E               	btfss	3998,0,c	;volatile
+   555  00012C  EF9A  F000         	goto	i2u9_41
+   556  000130  EF9C  F000         	goto	i2u9_40
+   557  000134                     i2u9_41:
+   558  000134  EFE2  F000         	goto	i2l93
+   559  000138                     i2u9_40:
+   560  000138                     
+   561                           ;Question2.c: 180:     {;Question2.c: 181:         TMR1IF = 0;
+   562  000138  909E               	bcf	3998,0,c	;volatile
+   563  00013A                     
+   564                           ;Question2.c: 182:         if(mode == 0 && CCPR1L < 16)
+   565  00013A  5005               	movf	_mode^0,w,c
+   566  00013C  1006               	iorwf	(_mode+1)^0,w,c
+   567  00013E  A4D8               	btfss	status,2,c
+   568  000140  EFA4  F000         	goto	i2u10_41
+   569  000144  EFA6  F000         	goto	i2u10_40
+   570  000148                     i2u10_41:
+   571  000148  EFBF  F000         	goto	i2l873
+   572  00014C                     i2u10_40:
+   573  00014C  0E10               	movlw	16
+   574  00014E  60BE               	cpfslt	190,c	;volatile
+   575  000150  EFAC  F000         	goto	i2u11_41
+   576  000154  EFAE  F000         	goto	i2u11_40
+   577  000158                     i2u11_41:
+   578  000158  EFBF  F000         	goto	i2l873
+   579  00015C                     i2u11_40:
+   580  00015C                     
+   581                           ;Question2.c: 183:         {;Question2.c: 184:             CCPR1L = CCPR1L + 1;
+   582  00015C  28BE               	incf	190,w,c	;volatile
+   583  00015E  6EBE               	movwf	190,c	;volatile
+   584                           
+   585                           ;Question2.c: 185:             if(CCPR1L == 16) mode = 1;
+   586  000160  0E10               	movlw	16
+   587  000162  18BE               	xorwf	190,w,c	;volatile
+   588  000164  A4D8               	btfss	status,2,c
+   589  000166  EFB7  F000         	goto	i2u12_41
+   590  00016A  EFB9  F000         	goto	i2u12_40
+   591  00016E                     i2u12_41:
+   592  00016E  EFDE  F000         	goto	i2l883
+   593  000172                     i2u12_40:
+   594  000172  0E00               	movlw	0
+   595  000174  6E06               	movwf	(_mode+1)^0,c
+   596  000176  0E01               	movlw	1
+   597  000178  6E05               	movwf	_mode^0,c
+   598  00017A  EFDE  F000         	goto	i2l883
+   599  00017E                     i2l873:
+   600  00017E  0405               	decf	_mode^0,w,c
+   601  000180  1006               	iorwf	(_mode+1)^0,w,c
+   602  000182  A4D8               	btfss	status,2,c
+   603  000184  EFC6  F000         	goto	i2u13_41
+   604  000188  EFC8  F000         	goto	i2u13_40
+   605  00018C                     i2u13_41:
+   606  00018C  EFDE  F000         	goto	i2l883
+   607  000190                     i2u13_40:
+   608  000190  50BE               	movf	190,w,c	;volatile
+   609  000192  B4D8               	btfsc	status,2,c
+   610  000194  EFCE  F000         	goto	i2u14_41
+   611  000198  EFD0  F000         	goto	i2u14_40
+   612  00019C                     i2u14_41:
+   613  00019C  EFDE  F000         	goto	i2l883
+   614  0001A0                     i2u14_40:
+   615  0001A0                     
+   616                           ;Question2.c: 188:         {;Question2.c: 189:             CCPR1L = CCPR1L - 1;
+   617  0001A0  04BE               	decf	190,w,c	;volatile
+   618  0001A2  6EBE               	movwf	190,c	;volatile
+   619  0001A4                     
+   620                           ;Question2.c: 190:             if( CCPR1L == 0) mode = 0;
+   621  0001A4  50BE               	movf	190,w,c	;volatile
+   622  0001A6  A4D8               	btfss	status,2,c
+   623  0001A8  EFD8  F000         	goto	i2u15_41
+   624  0001AC  EFDA  F000         	goto	i2u15_40
+   625  0001B0                     i2u15_41:
+   626  0001B0  EFDE  F000         	goto	i2l883
+   627  0001B4                     i2u15_40:
+   628  0001B4  0E00               	movlw	0
+   629  0001B6  6E06               	movwf	(_mode+1)^0,c
+   630  0001B8  0E00               	movlw	0
+   631  0001BA  6E05               	movwf	_mode^0,c
+   632  0001BC                     i2l883:
+   633                           
+   634                           ;Question2.c: 192:         TMR1 = temp_for_timer;
+   635  0001BC  C001  FFCE         	movff	_temp_for_timer,4046	;volatile
+   636  0001C0  C002  FFCF         	movff	_temp_for_timer+1,4047	;volatile
+   637  0001C4                     i2l93:
+   638  0001C4  9209               	bcf	int$flags,1,c	;clear compiler interrupt flag (level 2)
+   639  0001C6  0011               	retfie		f
+   640  0001C8                     __end_of_Hi_ISR:
+   641                           	opt callstack 0
+   642  0000                     
+   643                           	psect	rparam
+   644  0000                     
+   645                           	psect	temp
+   646  000009                     btemp:
+   647                           	opt callstack 0
+   648  000009                     	ds	1
+   649  0000                     int$flags	set	btemp
+   650  0000                     wtemp8	set	btemp+1
+   651  0000                     ttemp5	set	btemp+1
+   652  0000                     ttemp6	set	btemp+4
+   653  0000                     ttemp7	set	btemp+8
+   654                           tosu	equ	0xFFF
+   655                           tosh	equ	0xFFE
+   656                           tosl	equ	0xFFD
+   657                           stkptr	equ	0xFFC
+   658                           pclatu	equ	0xFFB
+   659                           pclath	equ	0xFFA
+   660                           pcl	equ	0xFF9
+   661                           tblptru	equ	0xFF8
+   662                           tblptrh	equ	0xFF7
+   663                           tblptrl	equ	0xFF6
+   664                           tablat	equ	0xFF5
+   665                           prodh	equ	0xFF4
+   666                           prodl	equ	0xFF3
+   667                           indf0	equ	0xFEF
+   668                           postinc0	equ	0xFEE
+   669                           postdec0	equ	0xFED
+   670                           preinc0	equ	0xFEC
+   671                           plusw0	equ	0xFEB
+   672                           fsr0h	equ	0xFEA
+   673                           fsr0l	equ	0xFE9
+   674                           wreg	equ	0xFE8
+   675                           indf1	equ	0xFE7
+   676                           postinc1	equ	0xFE6
+   677                           postdec1	equ	0xFE5
+   678                           preinc1	equ	0xFE4
+   679                           plusw1	equ	0xFE3
+   680                           fsr1h	equ	0xFE2
+   681                           fsr1l	equ	0xFE1
+   682                           bsr	equ	0xFE0
+   683                           indf2	equ	0xFDF
+   684                           postinc2	equ	0xFDE
+   685                           postdec2	equ	0xFDD
+   686                           preinc2	equ	0xFDC
+   687                           plusw2	equ	0xFDB
+   688                           fsr2h	equ	0xFDA
+   689                           fsr2l	equ	0xFD9
+   690                           status	equ	0xFD8
+
+
+Data Sizes:
+    Strings     0
+    Constant    0
+    Data        0
+    BSS         6
+    Persistent  0
+    Stack       0
+
+Auto Spaces:
+    Space          Size  Autos    Used
+    COMRAM          126      2       8
+    BANK0           128      0       0
+    BANK1           256      0       0
+    BANK2           256      0       0
+    BANK3           256      0       0
+    BANK4           256      0       0
+    BANK5           256      0       0
+
+Pointer List with Targets:
+
+    None.
+
+Critical Paths under _main in COMRAM
+
+    None.
+
+Critical Paths under _Hi_ISR in COMRAM
+
+    None.
+
+Critical Paths under _main in BANK0
+
+    None.
+
+Critical Paths under _Hi_ISR in BANK0
+
+    None.
+
+Critical Paths under _main in BANK1
+
+    None.
+
+Critical Paths under _Hi_ISR in BANK1
+
+    None.
+
+Critical Paths under _main in BANK2
+
+    None.
+
+Critical Paths under _Hi_ISR in BANK2
+
+    None.
+
+Critical Paths under _main in BANK3
+
+    None.
+
+Critical Paths under _Hi_ISR in BANK3
+
+    None.
+
+Critical Paths under _main in BANK4
+
+    None.
+
+Critical Paths under _Hi_ISR in BANK4
+
+    None.
+
+Critical Paths under _main in BANK5
+
+    None.
+
+Critical Paths under _Hi_ISR in BANK5
+
+    None.
+
+Call Graph Tables:
+
+ ---------------------------------------------------------------------------------
+ (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
+ ---------------------------------------------------------------------------------
+ (0) _main                                                 0     0      0       0
+                           _LED_Init
+ ---------------------------------------------------------------------------------
+ (1) _LED_Init                                             0     0      0       0
+ ---------------------------------------------------------------------------------
+ Estimated maximum stack depth 1
+ ---------------------------------------------------------------------------------
+ (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
+ ---------------------------------------------------------------------------------
+ (2) _Hi_ISR                                               2     2      0       0
+                                              0 COMRAM     2     2      0
+ ---------------------------------------------------------------------------------
+ Estimated maximum stack depth 2
+ ---------------------------------------------------------------------------------
+
+ Call Graph Graphs:
+
+ _main (ROOT)
+   _LED_Init
+
+ _Hi_ISR (ROOT)
+
+ Address spaces:
+Name               Size   Autos  Total    Cost      Usage
+BIGRAM             5FF      0       0      17        0.0%
+EEDATA             100      0       0       0        0.0%
+BITBANK5           100      0       0      16        0.0%
+BANK5              100      0       0      14        0.0%
+BITBANK4           100      0       0      12        0.0%
+BANK4              100      0       0      13        0.0%
+BITBANK3           100      0       0      10        0.0%
+BANK3              100      0       0      11        0.0%
+BITBANK2           100      0       0       8        0.0%
+BANK2              100      0       0       9        0.0%
+BITBANK1           100      0       0       6        0.0%
+BANK1              100      0       0       7        0.0%
+BITBANK0            80      0       0       4        0.0%
+BANK0               80      0       0       5        0.0%
+BITCOMRAM           7E      0       0       0        0.0%
+COMRAM              7E      2       8       1        6.3%
+BITSFR               0      0       0     200        0.0%
+SFR                  0      0       0     200        0.0%
+STACK                0      0       0       2        0.0%
+NULL                 0      0       0       0        0.0%
+ABS                  0      0       8      15        0.0%
+DATA                 0      0       8       3        0.0%
+CODE                 0      0       0       0        0.0%
+
+
+Microchip Technology PIC18 Macro Assembler V2.10 build 88905656 
+Symbol Table                                                                                   Mon Jan 06 19:32:51 2020
+
+                     l61 0244                       l62 0244                       l67 0228  
+            __CFG_BORV$3 000000             __CFG_CP0$OFF 000000             __CFG_CP1$OFF 000000  
+           __CFG_CP2$OFF 000000             __CFG_CP3$OFF 000000                      l801 0208  
+                    l811 021E                      l803 020A                      l813 0220  
+                    l805 020C                      l821 0240                      l815 0222  
+                    l807 020E                      l817 0224                      l809 021C  
+                    l819 0226                      l771 01D0                      l781 01E8  
+                    l773 01D8                      l791 01F2                      l783 01EA  
+                    l775 01DA                      l793 01F4                      l785 01EC  
+                    l777 01E4                      l769 01C8                      l795 0202  
+                    l787 01EE                      l779 01E6                      l797 0204  
+                    l789 01F0                      l799 0206             __CFG_CPB$OFF 000000  
+                    _PR2 000FCB             __CFG_CPD$OFF 000000                      wreg 000FE8  
+           __CFG_LVP$OFF 000000             __CFG_WDT$OFF 000000                     i2l93 01C4  
+                   _TMR1 000FCE                     _TMR2 000FCC                     _main 0240  
+                   _mode 0005                     btemp 0009                     start 000E  
+          __CFG_IESO$OFF 000000            __CFG_MCLRE$ON 000000             ___param_bank 000000  
+       __end_of_LED_Init 022A                    ?_main 0007                    _T2CON 000FCA  
+                  i2l831 005A                    i2l823 0014                    i2l841 00AC  
+                  i2l833 006C                    i2l825 0022                    i2l851 00F6  
+                  i2l843 00B8                    i2l835 0078                    i2l827 0026  
+                  i2l853 010C                    i2l845 00CE                    i2l837 008E  
+                  i2l829 004E                    i2l861 012A                    i2l871 0172  
+                  i2l863 0138                    i2l855 0118                    i2l847 00DA  
+                  i2l839 009A                    i2l881 01B4                    i2l873 017E  
+                  i2l865 013A                    i2l849 00EA                    i2l857 0120  
+                  i2l875 0190                    i2l883 01BC                    i2l867 014C  
+                  i2l859 0128                    i2l877 01A0                    i2l869 015C  
+                  i2l879 01A4            __CFG_PWRT$OFF 000000            __CFG_WRT0$OFF 000000  
+          __CFG_WRT1$OFF 000000            __CFG_WRT2$OFF 000000            __CFG_WRT3$OFF 000000  
+         __CFG_EBTR0$OFF 000000           __CFG_FCMEN$OFF 000000           __CFG_EBTR1$OFF 000000  
+         __CFG_EBTR2$OFF 000000           __CFG_EBTR3$OFF 000000            __CFG_WRTB$OFF 000000  
+          __CFG_WRTC$OFF 000000            __CFG_WRTD$OFF 000000           __CFG_EBTRB$OFF 000000  
+                  ttemp5 000A                    ttemp6 000D                    ttemp7 0011  
+                  status 000FD8                    wtemp8 000A          __initialization 022A  
+           __end_of_main 024C                   ??_main 0009            __activetblptr 000000  
+                 _ADCON0 000FC2                   _ADCON1 000FC1                   _ADCON2 000FC0  
+                 _ADRESH 000FC4                   _ADRESL 000FC3                   _CCPR1L 000FBE  
+                 _TMR1IF 007CF0                   i2u1_40 0022                   i2u1_41 001E  
+                 i2u2_40 004E                   i2u2_41 004A                   i2u3_40 006C  
+                 i2u3_41 0068                   i2u4_40 008E                   i2u4_41 008A  
+                 i2u5_40 00AC                   i2u5_41 00A8                   i2u6_40 00CE  
+                 i2u6_41 00CA                   i2u7_40 00EA                   i2u7_41 00E6  
+                 i2u8_40 010C                   i2u8_41 0108                   i2u9_40 0138  
+                 i2u9_41 0134                   _Hi_ISR 0008           __CFG_XINST$OFF 000000  
+         __CFG_STVREN$ON 000000                   _result 0003               __accesstop 0080  
+__end_of__initialization 0236          __CFG_PBADEN$OFF 000000                ?_LED_Init 0007  
+          ___rparam_used 000001           __pcstackCOMRAM 0007               ??_LED_Init 0009  
+                ?_Hi_ISR 0007                  i2u10_40 014C                  i2u10_41 0148  
+                i2u11_40 015C                  i2u11_41 0158                  i2u12_40 0172  
+                i2u12_41 016E                  i2u13_40 0190                  i2u13_41 018C  
+                i2u14_40 01A0                  i2u14_41 019C                  i2u15_40 01B4  
+                i2u15_41 01B0                  i2u16_47 0122          __size_of_Hi_ISR 01C0  
+                __Hparam 0000                  __Lparam 0000                  __pcinit 022A  
+                __ramtop 0600                  __ptext0 0240                  __ptext1 01C8  
+              _T1CONbits 000FCD           __pintcode_body 0012     end_of_initialization 0236  
+                int_func 0012                _TRISAbits 000F92                _TRISCbits 000F94  
+              _TRISDbits 000F95              _CCP1CONbits 000FBD           __end_of_Hi_ISR 01C8  
+      __size_of_LED_Init 0062      start_initialization 022A           _temp_for_timer 0001  
+       __CFG_OSC$INTIO67 000000                 ??_Hi_ISR 0007         __CFG_LPT1OSC$OFF 000000  
+            __pbssCOMRAM 0001        __CFG_CCP2MX$PORTC 000000                __pintcode 0008  
+               _LED_Init 01C8                 _IPR1bits 000F9F                 _PIE1bits 000F9D  
+               _PIR1bits 000F9E                 _RCONbits 000FD0         __CFG_WDTPS$32768 000000  
+             _ADCON0bits 000FC2                 __Hrparam 0000                 __Lrparam 0000  
+     __CFG_BOREN$SBORDIS 000000            __size_of_main 000C                 int$flags 0009  
+             _INTCONbits 000FF2                 intlevel2 0000               _OSCCONbits 000FD3  
